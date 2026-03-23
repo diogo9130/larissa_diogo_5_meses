@@ -307,19 +307,19 @@
     }
 
     .header-inner{
-      min-height:78px;
-      display:flex;
+      min-height:86px;
+      display:grid;
+      grid-template-columns:minmax(0,1fr) auto;
       align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      flex-wrap:wrap;
-      padding:12px 0;
+      gap:16px 18px;
+      padding:14px 0;
     }
 
     .brand{
       display:flex;
       flex-direction:column;
-      gap:4px;
+      gap:5px;
+      min-width:0;
     }
 
     .brand-title{
@@ -333,77 +333,113 @@
     .brand-sub{
       font-size:.96rem;
       color:var(--muted);
+      line-height:1.45;
     }
 
     .header-controls{
       display:flex;
       align-items:center;
       gap:12px;
-      flex-wrap:wrap;
       justify-content:flex-end;
+      min-width:0;
     }
 
     .theme-toggle{
       border:none;
       cursor:pointer;
       border-radius:999px;
-      padding:11px 16px;
+      padding:12px 16px;
+      min-height:48px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
       font-weight:700;
       color:var(--rose-dark);
       background:var(--white-strong);
       border:1px solid var(--stroke);
       box-shadow:var(--shadow);
+      flex-shrink:0;
+      transition:transform .2s ease, background .3s ease;
+    }
+
+    .theme-toggle:hover{
+      transform:translateY(-1px);
     }
 
     .player{
-      display:flex;
+      display:grid;
+      grid-template-columns:auto minmax(0,1fr) auto;
       align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
+      gap:12px;
       padding:12px 14px;
       border-radius:24px;
-      max-width:100%;
+      width:min(100%, 620px);
+      min-width:0;
+      background:linear-gradient(135deg, rgba(255,255,255,0.82), rgba(255,255,255,0.58));
     }
 
-    .player-top{
+    body.dark-mode .player{
+      background:linear-gradient(135deg, rgba(255,255,255,0.09), rgba(255,255,255,0.06));
+    }
+
+    .player-controls{
       display:flex;
       align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-      width:100%;
+      gap:8px;
+      flex-shrink:0;
     }
 
     .player-btn{
       border:none;
       cursor:pointer;
-      border-radius:999px;
-      padding:10px 14px;
-      min-width:88px;
+      width:44px;
+      height:44px;
+      border-radius:50%;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:1rem;
       font-weight:700;
       color:#fff;
       background:linear-gradient(135deg, var(--rose), var(--lav-dark));
       box-shadow:0 10px 24px rgba(197, 124, 157, 0.24);
-      transition:.2s ease;
+      transition:transform .2s ease, filter .2s ease;
+      flex-shrink:0;
     }
 
     .player-btn:hover{
       transform:translateY(-1px);
+      filter:brightness(1.03);
+    }
+
+    .player-btn.play-main{
+      width:50px;
+      height:50px;
+      font-size:1.08rem;
+    }
+
+    .player-main{
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
     }
 
     .track-info{
-      min-width:220px;
-      max-width:360px;
+      min-width:0;
       color:var(--text);
       font-size:.92rem;
+      font-weight:600;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      flex:1;
     }
 
     .progress-wrap{
       width:100%;
-      display:flex;
+      display:grid;
+      grid-template-columns:minmax(0,1fr) auto;
       align-items:center;
       gap:10px;
     }
@@ -428,11 +464,65 @@
       border-radius:999px;
     }
 
+    .player-side{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      justify-content:flex-end;
+      flex-shrink:0;
+    }
+
+    .volume-wrap{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      min-width:118px;
+    }
+
+    .volume-icon{
+      font-size:1rem;
+      line-height:1;
+      color:var(--rose-dark);
+      flex-shrink:0;
+    }
+
+    .volume-slider{
+      -webkit-appearance:none;
+      appearance:none;
+      width:100%;
+      height:6px;
+      border-radius:999px;
+      background:var(--progress-bg);
+      outline:none;
+      cursor:pointer;
+    }
+
+    .volume-slider::-webkit-slider-thumb{
+      -webkit-appearance:none;
+      appearance:none;
+      width:14px;
+      height:14px;
+      border-radius:50%;
+      background:linear-gradient(135deg, var(--rose), var(--lav-dark));
+      border:none;
+      box-shadow:0 4px 10px rgba(197,124,157,.25);
+    }
+
+    .volume-slider::-moz-range-thumb{
+      width:14px;
+      height:14px;
+      border-radius:50%;
+      background:linear-gradient(135deg, var(--rose), var(--lav-dark));
+      border:none;
+      box-shadow:0 4px 10px rgba(197,124,157,.25);
+    }
+
     .time-info{
       min-width:86px;
       text-align:right;
       font-size:.82rem;
       color:var(--muted);
+      font-variant-numeric:tabular-nums;
     }
 
     main{
@@ -995,25 +1085,40 @@
 
     @media (max-width: 720px){
       .header-inner{
-        justify-content:center;
+        grid-template-columns:1fr;
       }
 
       .brand{
         text-align:center;
+        align-items:center;
       }
 
       .header-controls{
-        justify-content:center;
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      .theme-toggle,
+      .player{
+        width:100%;
       }
 
       .player{
-        justify-content:center;
+        grid-template-columns:1fr;
         border-radius:22px;
+        gap:10px;
+      }
+
+      .player-controls,
+      .player-side{
+        justify-content:center;
+      }
+
+      .player-main{
+        order:-1;
       }
 
       .track-info{
-        min-width:unset;
-        max-width:100%;
         text-align:center;
       }
 
@@ -1069,18 +1174,44 @@
         font-size:.97rem;
       }
 
-      .player-btn,
+      .brand-title{
+        font-size:2.2rem;
+      }
+
+      .brand-sub{
+        font-size:.88rem;
+      }
+
       .theme-toggle{
         width:100%;
       }
 
-      .player-top{
-        flex-direction:column;
+      .player-controls{
+        gap:10px;
+      }
+
+      .player-btn{
+        width:42px;
+        height:42px;
+      }
+
+      .player-btn.play-main{
+        width:48px;
+        height:48px;
       }
 
       .progress-wrap{
+        grid-template-columns:1fr;
+      }
+
+      .player-side{
         flex-direction:column;
         align-items:stretch;
+      }
+
+      .volume-wrap{
+        min-width:0;
+        width:100%;
       }
 
       .time-info{
@@ -1130,17 +1261,27 @@
         <button class="theme-toggle" id="themeToggleBtn">🌙 Modo noturno</button>
 
         <div class="player glass">
-          <div class="player-top">
-            <button class="player-btn" id="playPauseBtn">Pausar</button>
-            <button class="player-btn" id="nextTrackBtn">Próxima</button>
-            <div class="track-info" id="trackInfo">Tocando: Até que enfim – Ferrugem</div>
+          <div class="player-controls">
+            <button class="player-btn" id="prevTrackBtn" aria-label="Faixa anterior">⏮</button>
+            <button class="player-btn play-main" id="playPauseBtn" aria-label="Tocar ou pausar">⏸</button>
+            <button class="player-btn" id="nextTrackBtn" aria-label="Próxima faixa">⏭</button>
           </div>
 
-          <div class="progress-wrap">
-            <div class="progress-bar" id="progressBar">
-              <div class="progress-fill" id="progressFill"></div>
+          <div class="player-main">
+            <div class="track-info" id="trackInfo">Tocando: Até que enfim – Ferrugem</div>
+            <div class="progress-wrap">
+              <div class="progress-bar" id="progressBar">
+                <div class="progress-fill" id="progressFill"></div>
+              </div>
+              <div class="time-info" id="timeInfo">0:00 / 0:00</div>
             </div>
-            <div class="time-info" id="timeInfo">0:00 / 0:00</div>
+          </div>
+
+          <div class="player-side">
+            <div class="volume-wrap">
+              <span class="volume-icon">🔊</span>
+              <input class="volume-slider" id="volumeSlider" type="range" min="0" max="1" step="0.01" value="0.5" aria-label="Volume">
+            </div>
           </div>
         </div>
       </div>
@@ -1652,6 +1793,7 @@ foi a melhor coisa que já me aconteceu. ❤️`;
        MÚSICA
     =============================== */
     const audioPlayer = document.getElementById("audioPlayer");
+    const prevTrackBtn = document.getElementById("prevTrackBtn");
     const playPauseBtn = document.getElementById("playPauseBtn");
     const nextTrackBtn = document.getElementById("nextTrackBtn");
     const trackInfo = document.getElementById("trackInfo");
@@ -1661,6 +1803,7 @@ foi a melhor coisa que já me aconteceu. ❤️`;
     const progressBar = document.getElementById("progressBar");
     const progressFill = document.getElementById("progressFill");
     const timeInfo = document.getElementById("timeInfo");
+    const volumeSlider = document.getElementById("volumeSlider");
 
     const playlist = [
       { title: "Até que enfim – Ferrugem", file: "musica1.mp3" },
@@ -1673,6 +1816,7 @@ foi a melhor coisa que já me aconteceu. ❤️`;
 
     let currentTrack = 0;
     let isPlaying = false;
+    let currentVolume = 0.5;
 
     function formatTime(seconds) {
       if (isNaN(seconds)) return "0:00";
@@ -1681,32 +1825,44 @@ foi a melhor coisa que já me aconteceu. ❤️`;
       return `${min}:${sec}`;
     }
 
+    function updatePlayButton() {
+      playPauseBtn.textContent = isPlaying ? "⏸" : "▶";
+    }
+
     function loadTrack(index) {
       currentTrack = index;
       audioPlayer.src = playlist[currentTrack].file;
       trackInfo.textContent = `(${currentTrack + 1}/${playlist.length}) ${playlist[currentTrack].title}`;
-      audioPlayer.volume = 0.5;
+      audioPlayer.volume = currentVolume;
+      volumeSlider.value = currentVolume;
     }
 
     async function playAudio() {
       try {
         await audioPlayer.play();
         isPlaying = true;
-        playPauseBtn.textContent = "Pausar";
+        updatePlayButton();
       } catch (error) {
         isPlaying = false;
-        playPauseBtn.textContent = "Tocar";
+        updatePlayButton();
       }
     }
 
     function pauseAudio() {
       audioPlayer.pause();
       isPlaying = false;
-      playPauseBtn.textContent = "Tocar";
+      updatePlayButton();
     }
 
     function nextTrack() {
       currentTrack = (currentTrack + 1) % playlist.length;
+      loadTrack(currentTrack);
+    updatePlayButton();
+      playAudio();
+    }
+
+    function prevTrack() {
+      currentTrack = (currentTrack - 1 + playlist.length) % playlist.length;
       loadTrack(currentTrack);
       playAudio();
     }
@@ -1719,7 +1875,13 @@ foi a melhor coisa que já me aconteceu. ❤️`;
       }
     });
 
+    prevTrackBtn.addEventListener("click", prevTrack);
     nextTrackBtn.addEventListener("click", nextTrack);
+
+    volumeSlider.addEventListener("input", (e) => {
+      currentVolume = Number(e.target.value);
+      audioPlayer.volume = currentVolume;
+    });
 
     audioPlayer.addEventListener("ended", nextTrack);
 
