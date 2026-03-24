@@ -200,23 +200,107 @@
       position:fixed;
       inset:0;
       z-index:120;
-      background:linear-gradient(135deg, rgba(255,248,251,0.94), rgba(245,241,255,0.92));
-      backdrop-filter:blur(12px);
       display:flex;
       align-items:center;
       justify-content:center;
-      padding:20px;
-      transition:.45s ease;
+      overflow:hidden;
+
+      background:radial-gradient(circle at center, rgba(255,255,255,0.2), rgba(0,0,0,0.6));
+      backdrop-filter:blur(30px);
+
+      animation:introFadeIn 1.6s ease forwards;
     }
 
-    body.dark-mode .intro-overlay{
-      background:linear-gradient(135deg, rgba(18,14,20,0.94), rgba(24,19,32,0.92));
+    @keyframes introFadeIn{
+      from{
+        opacity:0;
+        transform:scale(1.1);
+      }
+      to{
+        opacity:1;
+        transform:scale(1);
+      }
     }
 
     .intro-overlay.hidden{
-      opacity:0;
-      visibility:hidden;
-      pointer-events:none;
+      animation:introFadeOut 1.2s ease forwards;
+    }
+
+    @keyframes introFadeOut{
+      to{
+        opacity:0;
+        transform:scale(1.05);
+        filter:blur(20px);
+      }
+    }
+
+    /* CARD MAIS CINEMATOGRÁFICO */
+    .intro-card{
+      width:min(100%, 640px);
+      padding:36px 26px;
+      border-radius:32px;
+      text-align:center;
+      position:relative;
+
+      background:rgba(255,255,255,0.12);
+      border:1px solid rgba(255,255,255,0.3);
+      backdrop-filter:blur(20px);
+
+      box-shadow:0 30px 80px rgba(0,0,0,0.4);
+
+      animation:cardReveal 1.6s ease;
+    }
+
+    @keyframes cardReveal{
+      from{
+        opacity:0;
+        transform:translateY(40px) scale(.95);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+      }
+    }
+
+    /* TEXTO ENTRANDO SUAVE */
+    .intro-card h1{
+      animation:textFade 2s ease;
+    }
+
+    .intro-card p{
+      animation:textFade 2.4s ease;
+    }
+
+    @keyframes textFade{
+      from{
+        opacity:0;
+        transform:translateY(20px);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    /* BOTÃO COM BRILHO */
+    .enter-btn{
+      position:relative;
+      overflow:hidden;
+    }
+
+    .enter-btn::after{
+      content:"";
+      position:absolute;
+      top:0;
+      left:-100%;
+      width:100%;
+      height:100%;
+      background:linear-gradient(120deg, transparent, rgba(255,255,255,.6), transparent);
+      transition:.6s;
+    }
+
+    .enter-btn:hover::after{
+      left:100%;
     }
 
     .intro-card{
@@ -1904,8 +1988,13 @@ foi a melhor coisa que já me aconteceu. ❤️`;
 
     enterSiteBtn.addEventListener("click", async (e) => {
       introOverlay.classList.add("hidden");
+
       heartExplosion(e.clientX, e.clientY, 18);
-      await playAudio();
+
+      setTimeout(async () => {
+        await playAudio();
+        introOverlay.style.display = "none";
+      }, 900);
     });
 
     previewNoMusicBtn.addEventListener("click", () => {
